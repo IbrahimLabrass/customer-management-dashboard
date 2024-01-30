@@ -1,0 +1,59 @@
+<div class="container mt-4">
+  <h2>Customer List</h2>
+
+  <!-- Filter and Sort-->
+  <div class="mb-3">
+    <label for="filter">Filter:</label>
+    <input type="text" id="filter" [(ngModel)]="filterText" (input)="applyFilter()" />
+
+    <label for="sortBy">Sort By:</label>
+    <select id="sortBy" [(ngModel)]="sortBy" (change)="applySorting()">
+      <option value="name">Name</option>
+      <option value="email">Email</option>
+      <option value="contactNumber">Contact Number</option>
+    </select>
+
+    <label for="sortDirection">Sort Direction:</label>
+    <select id="sortDirection" [(ngModel)]="sortDirection" (change)="applySorting()">
+      <option value="asc">Ascending</option>
+      <option value="desc">Descending</option>
+    </select>
+  </div>
+
+  <!-- Customer Listttttt -->
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Contact Number</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let customer of filteredCustomers">
+        <td>{{ customer.name }}</td>
+        <td>{{ customer.email }}</td>
+        <td>{{ customer.contactNumber }}</td>
+        <td>
+          <button class="btn btn-primary" (click)="editCustomer(customer)">Edit</button>
+          <button class="btn btn-danger" (click)="deleteCustomer(customer.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- update -->
+  <div *ngIf="isEditing" class="mt-4">
+    <h2>{{ selectedCustomer.id ? 'Edit Customer' : 'Add New Customer' }}</h2>
+    <app-customer-form [customer]="selectedCustomer" (save)="selectedCustomer.id ? updateCustomer() : addCustomer($event)"></app-customer-form>
+    <button class="btn btn-secondary" (click)="clearSelectedCustomer()">Cancel</button>
+  </div>
+
+  <!-- Add New Customer -->
+  <div class="mt-4">
+    <h2>Add New Customer</h2>
+    <app-customer-form [customer]="{}" (save)="addCustomer($event)"></app-customer-form>
+  </div>
+</div>
